@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/randomvin', function () {
@@ -21,4 +21,5 @@ Route::get('/randomvin', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin', 'AdminController@AdminHome');
+Route::get('/admin/cars', 'AdminController@AdminCars');
