@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/randomvin', function () {
+    echo file_get_contents("http://randomvin.com/getvin.php?type=real");
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
