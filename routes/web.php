@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('auth.login');
 });
 
 Route::get('/randomvin', function () {
@@ -23,3 +23,8 @@ Auth::routes();
 
 Route::get('/admin', 'AdminController@AdminHome');
 Route::get('/admin/cars', 'AdminController@AdminCars');
+Route::get('/admin/cars/add', 'AdminController@AdminCarAdder');
+Route::post('/admin/cars/add/new', 'AdminController@AdminNewCar');
+Route::get('/admin/cars/remove/{id}', 'AdminController@AdminCarRemover');
+Route::get('/admin/cars/edit/{id}', 'AdminController@AdminCarEditor');
+Route::post('/admin/cars/edit/modify/{id}', 'AdminController@AdminCarPublishEdit');

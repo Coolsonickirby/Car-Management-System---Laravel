@@ -88,13 +88,13 @@
         </div>
 
         <div class="form-group">
-                <label for="steeringlocation">Steering Location</label>
-                <input v-model="steeringlocation" type="text" class="form-control" id="steeringlocation" placeholder="">
+            <label for="steeringlocation">Steering Location</label>
+            <input v-model="bodyclass" name="steeringlocation" id="steeringlocation" type="text" class="form-control" placeholder="">
         </div>
-
+                
         <div class="form-group">
-                <label for="fueltype">Fuel Type</label>
-                <input v-model="fueltype" type="text" class="form-control" id="fueltype" placeholder="">
+            <label for="fueltype">Fuel Type</label>
+            <input v-model="fueltype" name="fueltype" type="text" class="form-control" id="fueltype" placeholder="">
         </div>
 
         <div class="form-group">

@@ -37578,19 +37578,24 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.steeringlocation,
-            expression: "steeringlocation"
+            value: _vm.bodyclass,
+            expression: "bodyclass"
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", id: "steeringlocation", placeholder: "" },
-        domProps: { value: _vm.steeringlocation },
+        attrs: {
+          name: "steeringlocation",
+          id: "steeringlocation",
+          type: "text",
+          placeholder: ""
+        },
+        domProps: { value: _vm.bodyclass },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.steeringlocation = $event.target.value
+            _vm.bodyclass = $event.target.value
           }
         }
       })
@@ -37609,7 +37614,12 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", id: "fueltype", placeholder: "" },
+        attrs: {
+          name: "fueltype",
+          type: "text",
+          id: "fueltype",
+          placeholder: ""
+        },
         domProps: { value: _vm.fueltype },
         on: {
           input: function($event) {
