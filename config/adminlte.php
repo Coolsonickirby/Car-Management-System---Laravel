@@ -120,7 +120,7 @@ return [
         [
             'text'        => 'Cars',
             'url'         => 'admin/cars',
-            'icon'        => 'file',
+            'icon'        => 'car',
             'label'       => '',
             'label_color' => 'success',
         ],

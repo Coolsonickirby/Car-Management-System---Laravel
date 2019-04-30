@@ -20,6 +20,8 @@
                 <br>
         @endforeach
     @else
-        <h1>Pretty empty fam</h1>
+        <div class="container">
+            <h1>Pretty empty fam</h1>
+        </div>
     @endif
 @endsection
