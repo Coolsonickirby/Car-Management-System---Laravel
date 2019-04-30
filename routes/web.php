@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
+Route::get('/', 'AdminController@AdminHome');
+Route::get('/home', function(){
+    return redirect('/admin');
 });
 
 Route::get('/randomvin', function () {

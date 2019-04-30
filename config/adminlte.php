@@ -1,6 +1,9 @@
 <?php
 
+
 return [
+
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +48,7 @@ return [
     |
     */
 
-    'skin' => 'blue',
+    'skin' => 'green',
 
     /*
     |--------------------------------------------------------------------------
@@ -118,10 +121,10 @@ return [
             'text'        => 'Cars',
             'url'         => 'admin/cars',
             'icon'        => 'file',
-            'label'       => 2,
+            'label'       => '',
             'label_color' => 'success',
         ],
-        'ACCOUNT SETTINGS',
+        /*'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
             'url'  => 'admin/settings',
@@ -182,7 +185,7 @@ return [
         [
             'text'       => 'Information',
             'icon_color' => 'aqua',
-        ],
+        ],*/
     ],
 
     /*

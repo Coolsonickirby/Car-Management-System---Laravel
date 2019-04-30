@@ -4,25 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\CarProduct;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function AdminHome(){
-        return view('admin');
+
+        if (Auth::check()) {
+            $cars = CarProduct::all();
+
+            return view('admin') -> with('cars', $cars);
+        } else {
+            return redirect('login');
+        }
+        
     }
 
     public function AdminCars(){
-        $cars = CarProduct::all();
 
-        return view('CarManager') -> with('cars', $cars);
+        if (Auth::check()) {
+
+            $cars = CarProduct::all();
+
+            return view('CarManager') -> with('cars', $cars);
+
+        } else {
+
+            return redirect('login');
+
+        }
+        
     }
         
     public function AdminCarAdder(){
-        return view('CarField');
+        if (Auth::check()) {
+            return view('CarField');
+        } else {
+            return redirect('login');
+        }
+        
+        
     }
 
     public function AdminNewCar(Request $newcar){
+
+        if (Auth::check()) {
         $this->validate($newcar, [
             'carname' => 'required',
             'price' => 'required'
@@ -51,15 +77,27 @@ class AdminController extends Controller
         $carnew->save();
         
         return redirect('/admin/cars');
+        } else{
+            return redirect('login');
+        }
     }
 
     public function AdminCarEditor($id){
+
+        if (Auth::check()) {
+
         $car = CarProduct::find($id);
 
         return view('CarEditorField') -> with('car', $car);
+
+        } else{
+            return redirect('login');
+        }
     }
 
     public function AdminCarPublishEdit($id, Request $oldcar){
+        if (Auth::check()) {
+
         $car = CarProduct::find($id);
 
         $car->carname = $oldcar->input('carname');
@@ -85,15 +123,22 @@ class AdminController extends Controller
         $car->save();
 
         return redirect('/admin/cars');
-
+        } else{
+            return redirect('login');
+        }
         
     }
 
     public function AdminCarRemover($id){
+        if (Auth::check()) {
+
         $car= CarProduct::find($id);
         $car->delete();
 
         return redirect('/admin/cars');
+        } else{
+            return redirect('login');
+        }
     }
 
 }
