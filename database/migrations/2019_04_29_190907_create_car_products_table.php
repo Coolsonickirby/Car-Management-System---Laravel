@@ -18,7 +18,7 @@ class CreateCarProductsTable extends Migration
             $table->string('carname')->nullable();
             $table->string('price')->nullable();
             $table->string('description')->nullable();
-            $table->string('photos')->nullable();
+            $table->text('photos')->nullable();
             $table->string('vin')->nullable();
             $table->string('model')->nullable();
             $table->string('year')->nullable();

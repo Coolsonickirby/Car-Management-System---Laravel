@@ -12,7 +12,7 @@
 
         <div class="form-group">
             <label for="images">Pictures</label>
-            <input type="file"  class="form-control" style="height: 100%;" name="image">
+            <input type="file"  class="form-control" style="height: 100%;" name="images[]" multiple>
         </div>
 
         <div class="form-group">

@@ -37672,7 +37672,7 @@ var staticRenderFns = [
       _c("input", {
         staticClass: "form-control",
         staticStyle: { height: "100%" },
-        attrs: { type: "file", name: "image" }
+        attrs: { type: "file", name: "images[]", multiple: "" }
       })
     ])
   },

@@ -57,16 +57,24 @@ class AdminController extends Controller
             'price' => 'required'
         ]);
 
-        $newcar->image->store('public');
 
-        $url = Storage::url($newcar->image->hashName());
+        $imagenames = [];
+
+        foreach($newcar->file('images') as $image)
+        {
+            $image->store('public');   
+            $url = Storage::url($image->hashName());       
+            array_push($imagenames, $url);
+        }
+
+        
 
         $carnew = new CarProduct;
         $carnew->carname = $newcar->input('carname');
         $carnew->price = $newcar->input('price');
         $carnew->vin = $newcar->input('vin');
         $carnew->description = $newcar->input('cardescription');
-        $carnew->photos = $url;
+        $carnew->photos = serialize($imagenames);
         $carnew->model = $newcar->input('model');
         $carnew->make = $newcar->input('make');
         $carnew->year = $newcar->input('modelyear');
@@ -111,7 +119,6 @@ class AdminController extends Controller
         $car->price = $oldcar->input('price');
         $car->vin = $oldcar->input('vin');
         $car->description = $oldcar->input('cardescription');
-        $car->photos = $oldcar->input('photos');
         $car->model = $oldcar->input('model');
         $car->make = $oldcar->input('make');
         $car->year = $oldcar->input('modelyear');
@@ -140,9 +147,13 @@ class AdminController extends Controller
         if (Auth::check()) {
 
         $car = CarProduct::find($id);
-        $file_to_delete1 = str_replace("storage","public",$car->photos);
+        
+        foreach(unserialize($car->photos) as $photo){
+            $file_to_delete = str_replace("storage","public",$photo);
 
-        Storage::delete($file_to_delete1);
+            Storage::delete($file_to_delete);
+        }
+
         $car->delete();
 
         return redirect('/admin/cars');
