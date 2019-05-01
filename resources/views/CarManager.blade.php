@@ -12,6 +12,7 @@
                 <h1>{{$car->carname}}</h1>
                 <h3>{{$car->price}}</h3>
                 <h4>{{$car->vin}}</h4>
+                <img src="{{asset($car->photos)}}" style="max-width:500px;max-height:500px;">
                 <p>{{$car->description}}</p>
                 <a href="/admin/cars/edit/{{$car->id}}" class="btn btn-warning">Edit Car</a>
                 <a href="/admin/cars/remove/{{$car->id}}" class="btn btn-danger">Delete Car</a>

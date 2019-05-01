@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CarProduct;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -54,12 +55,21 @@ class AdminController extends Controller
             'price' => 'required'
         ]);
 
+
+        $imagename = $newcar->image->getClientOriginalName();
+        
+
+
+        $newcar->image->storeAs('public', $imagename);
+
+        $url = Storage::url($imagename);
+
         $carnew = new CarProduct;
         $carnew->carname = $newcar->input('carname');
         $carnew->price = $newcar->input('price');
         $carnew->vin = $newcar->input('vin');
         $carnew->description = $newcar->input('cardescription');
-        $carnew->photos = $newcar->input('photos');
+        $carnew->photos = $url;
         $carnew->model = $newcar->input('model');
         $carnew->make = $newcar->input('make');
         $carnew->year = $newcar->input('modelyear');
@@ -132,7 +142,8 @@ class AdminController extends Controller
     public function AdminCarRemover($id){
         if (Auth::check()) {
 
-        $car= CarProduct::find($id);
+        $car = CarProduct::find($id);
+        Storage::delete($car->photos);
         $car->delete();
 
         return redirect('/admin/cars');
