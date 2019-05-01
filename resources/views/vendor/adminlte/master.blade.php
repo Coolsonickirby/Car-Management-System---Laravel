@@ -44,6 +44,7 @@
 </head>
 <body class="hold-transition @yield('body_class')">
 
+
 @yield('body')
 
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>

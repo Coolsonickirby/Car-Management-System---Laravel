@@ -38,8 +38,10 @@ class AdminController extends Controller
     }
         
     public function AdminCarAdder(){
+        $cars = CarProduct::all();
+
         if (Auth::check()) {
-            return view('CarField');
+            return view('CarField') -> with('cars', $cars);
         } else {
             return redirect('login');
         }
@@ -55,14 +57,9 @@ class AdminController extends Controller
             'price' => 'required'
         ]);
 
+        $newcar->image->store('public');
 
-        $imagename = $newcar->image->getClientOriginalName();
-        
-
-
-        $newcar->image->storeAs('public', $imagename);
-
-        $url = Storage::url($imagename);
+        $url = Storage::url($newcar->image->hashName());
 
         $carnew = new CarProduct;
         $carnew->carname = $newcar->input('carname');
@@ -143,7 +140,9 @@ class AdminController extends Controller
         if (Auth::check()) {
 
         $car = CarProduct::find($id);
-        Storage::delete($car->photos);
+        $file_to_delete1 = str_replace("storage","public",$car->photos);
+
+        Storage::delete($file_to_delete1);
         $car->delete();
 
         return redirect('/admin/cars');
