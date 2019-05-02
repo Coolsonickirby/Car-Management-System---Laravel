@@ -29,3 +29,5 @@ Route::post('/admin/cars/add/new', 'AdminController@AdminNewCar');
 Route::get('/admin/cars/remove/{id}', 'AdminController@AdminCarRemover');
 Route::get('/admin/cars/edit/{id}', 'AdminController@AdminCarEditor');
 Route::post('/admin/cars/edit/modify/{id}', 'AdminController@AdminCarPublishEdit');
+Route::get('/admin/settings/changepassword','AdminController@showChangePasswordForm');
+Route::post('/admin/settings/changepassword/new','AdminController@ChangePassword');

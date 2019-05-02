@@ -125,7 +125,7 @@ return [
             'label'       => '',
             'label_color' => 'success',
         ],
-        /*'ACCOUNT SETTINGS',
+        'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
             'url'  => 'admin/settings',
@@ -135,7 +135,7 @@ return [
             'text' => 'Change Password',
             'url'  => 'admin/settings',
             'icon' => 'lock',
-        ],
+        ],/*
         [
             'text'    => 'Multilevel',
             'icon'    => 'share',

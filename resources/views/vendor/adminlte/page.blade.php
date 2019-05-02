@@ -29,6 +29,17 @@
             'label'       => count($cars),
             'label_color' => 'success',
         ],
+        'ACCOUNT SETTINGS',
+        [
+            'text'    => 'Settings',
+            'icon'    => 'share',
+            'submenu' => [
+                [
+                    'text' => 'Change Password',
+                    'url'  => '/admin/settings/changepassword',
+                ],
+            ]
+        ]
     ]
 ])}}
     <div class="wrapper">
