@@ -14,34 +14,6 @@
 ][config('adminlte.layout')] : '') . (config('adminlte.collapse_sidebar') ? ' sidebar-collapse ' : ''))
 
 @section('body')
-{{Config::set([
-    'adminlte.menu' => [
-        'MAIN NAVIGATION',
-        [
-            'text' => 'Blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
-            'text'        => 'Cars',
-            'url'         => 'admin/cars',
-            'icon'        => 'car',
-            'label'       => count($cars),
-            'label_color' => 'success',
-        ],
-        'ACCOUNT SETTINGS',
-        [
-            'text'    => 'Settings',
-            'icon'    => 'share',
-            'submenu' => [
-                [
-                    'text' => 'Change Password',
-                    'url'  => '/admin/settings/changepassword',
-                ],
-            ]
-        ]
-    ]
-])}}
     <div class="wrapper">
         <!-- Main Header -->
         <header class="main-header">

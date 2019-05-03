@@ -127,15 +127,16 @@ return [
         ],
         'ACCOUNT SETTINGS',
         [
-            'text' => 'Profile',
-            'url'  => 'admin/settings',
-            'icon' => 'user',
+            'text'    => 'Settings',
+            'icon'    => 'share',
+            'submenu' => [
+                [
+                    'text' => 'Change Password',
+                    'url'  => '/admin/settings/changepassword',
+                ],
+            ]
         ],
-        [
-            'text' => 'Change Password',
-            'url'  => 'admin/settings',
-            'icon' => 'lock',
-        ],/*
+        /*
         [
             'text'    => 'Multilevel',
             'icon'    => 'share',

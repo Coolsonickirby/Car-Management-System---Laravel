@@ -27,7 +27,7 @@ class AdminController extends Controller
         if (Auth::check()) {
             $cars = CarProduct::all();
 
-            return view('admin') -> with('cars', $cars);
+            return view('adminpage.admin') -> with('cars', $cars);
         } else {
             return redirect('login');
         }
@@ -40,7 +40,7 @@ class AdminController extends Controller
 
             $cars = CarProduct::all();
 
-            return view('CarManager') -> with('cars', $cars);
+            return view('adminpage.CarManager') -> with('cars', $cars);
 
         } else {
 
@@ -54,7 +54,7 @@ class AdminController extends Controller
         $cars = CarProduct::all();
 
         if (Auth::check()) {
-            return view('CarField') -> with('cars', $cars);
+            return view('adminpage.CarField') -> with('cars', $cars);
         } else {
             return redirect('login');
         }
@@ -80,13 +80,14 @@ class AdminController extends Controller
             array_push($imagenames, $url);
         }
 
-        
+        $newcar->file('thumbnail')->store('public');
 
         $carnew = new CarProduct;
         $carnew->carname = $newcar->input('carname');
         $carnew->price = $newcar->input('price');
         $carnew->vin = $newcar->input('vin');
         $carnew->description = $newcar->input('cardescription');
+        $carnew->thumbnail = Storage::url($newcar->file('thumbnail')->hashname());
         $carnew->photos = serialize($imagenames);
         $carnew->model = $newcar->input('model');
         $carnew->make = $newcar->input('make');
@@ -167,6 +168,10 @@ class AdminController extends Controller
             Storage::delete($file_to_delete);
         }
 
+        $thumbnail = str_replace("storage","public",$car->thumbnail);
+
+        Storage::delete($thumbnail);
+
         $car->delete();
 
         return redirect('/admin/cars');
@@ -178,7 +183,7 @@ class AdminController extends Controller
     public function showChangePasswordForm(){
         $cars = CarProduct::all();
 
-        return view('changepassword') -> with('cars', $cars);
+        return view('auth.passwords.changepassword') -> with('cars', $cars);
     }
 
     public function ChangePassword(Request $request){

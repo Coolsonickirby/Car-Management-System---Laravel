@@ -1868,6 +1868,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -37258,6 +37263,8 @@ var render = function() {
     _vm._v(" "),
     _vm._m(2),
     _vm._v(" "),
+    _vm._m(3),
+    _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "vin" } }, [_vm._v("Vin #")]),
       _vm._v(" "),
@@ -37327,13 +37334,13 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _vm._m(3),
-    _vm._v(" "),
     _vm._m(4),
     _vm._v(" "),
     _vm._m(5),
     _vm._v(" "),
     _vm._m(6),
+    _vm._v(" "),
+    _vm._m(7),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "make" } }, [_vm._v("Make")]),
@@ -37632,7 +37639,7 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _vm._m(7)
+    _vm._m(8)
   ])
 }
 var staticRenderFns = [
@@ -37659,6 +37666,20 @@ var staticRenderFns = [
       _c("input", {
         staticClass: "form-control",
         attrs: { name: "price", type: "text", id: "price", placeholder: "" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "thumbnail" } }, [_vm._v("Thumbnail")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        staticStyle: { height: "100%" },
+        attrs: { type: "file", name: "thumbnail" }
       })
     ])
   },
