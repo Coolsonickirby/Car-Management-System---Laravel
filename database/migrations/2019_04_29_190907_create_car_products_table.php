@@ -35,6 +35,7 @@ class CreateCarProductsTable extends Migration
             $table->string('exteriorcolor')->nullable();
             $table->string('drivetrain')->nullable();
             $table->string('steeringlocation')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

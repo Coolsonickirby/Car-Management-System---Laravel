@@ -70,25 +70,35 @@ class AdminController extends Controller
             'price' => 'required'
         ]);
 
+        $carnew = new CarProduct;
 
         $imagenames = [];
+        
+        if($newcar->file('thumbnail') != null){
 
-        foreach($newcar->file('images') as $image)
-        {
-            $image->store('public');   
-            $url = Storage::url($image->hashName());       
-            array_push($imagenames, $url);
+            $newcar->file('thumbnail')->store('public');
+            
+            $carnew->thumbnail = Storage::url($newcar->file('thumbnail')->hashname());
+
         }
+        
+        if($newcar->file('images') != null){
 
-        $newcar->file('thumbnail')->store('public');
+            foreach($newcar->file('images') as $image)
+            {
+                $image->store('public');   
+                $url = Storage::url($image->hashName());       
+                array_push($imagenames, $url);
+            }
 
-        $carnew = new CarProduct;
+            $carnew->photos = serialize($imagenames);
+
+        }
+        
         $carnew->carname = $newcar->input('carname');
         $carnew->price = $newcar->input('price');
         $carnew->vin = $newcar->input('vin');
         $carnew->description = $newcar->input('cardescription');
-        $carnew->thumbnail = Storage::url($newcar->file('thumbnail')->hashname());
-        $carnew->photos = serialize($imagenames);
         $carnew->model = $newcar->input('model');
         $carnew->make = $newcar->input('make');
         $carnew->year = $newcar->input('modelyear');
@@ -162,17 +172,23 @@ class AdminController extends Controller
 
         $car = CarProduct::find($id);
         
-        foreach(unserialize($car->photos) as $photo){
-            $file_to_delete = str_replace("storage","public",$photo);
+        
+        if($car->photos != null){
+            foreach(unserialize($car->photos) as $photo){
+                $file_to_delete = str_replace("storage","public",$photo);
+    
+                Storage::delete($file_to_delete);
+            }
+        }
+        
+        if($car->thumbnail != null){
+            $thumbnail = str_replace("storage","public",$car->thumbnail);
 
-            Storage::delete($file_to_delete);
+            Storage::delete($thumbnail);
         }
 
-        $thumbnail = str_replace("storage","public",$car->thumbnail);
-
-        Storage::delete($thumbnail);
-
         $car->delete();
+
 
         return redirect('/admin/cars');
         } else{
