@@ -56,6 +56,10 @@
                             <label for="cardescription">Description</label>
                             <textarea name="cardescription" class="form-control" id="cardescription" placeholder="">{{$car->description}}</textarea>
                         </div>
+
+                        <script type="text/javascript">
+                                CKEDITOR.replace( 'cardescription' );
+                        </script>
                 
                         <div class="form-group">
                                 <label for="make">Make</label>

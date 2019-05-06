@@ -7,6 +7,7 @@ use App\CarProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Hash;
+use Config;
 
 class AdminController extends Controller
 {
@@ -40,7 +41,7 @@ class AdminController extends Controller
 
             $cars = CarProduct::all();
 
-            return view('adminpage.CarManager') -> with('cars', $cars);
+            return view('adminpage.cars.CarManager') -> with('cars', $cars);
 
         } else {
 
@@ -54,7 +55,7 @@ class AdminController extends Controller
         $cars = CarProduct::all();
 
         if (Auth::check()) {
-            return view('adminpage.CarField') -> with('cars', $cars);
+            return view('adminpage.cars.CarField') -> with('cars', $cars);
         } else {
             return redirect('login');
         }
@@ -127,7 +128,7 @@ class AdminController extends Controller
 
         $car = CarProduct::find($id);
 
-        return view('CarEditorField') -> with('car', $car);
+        return view('adminpage.cars.CarEditorField') -> with('car', $car);
 
         } else{
             return redirect('login');
@@ -161,7 +162,7 @@ class AdminController extends Controller
         $car->save();
 
         return redirect('/admin/cars');
-        } else{
+        } else {
             return redirect('login');
         }
         
@@ -197,29 +198,56 @@ class AdminController extends Controller
     }
 
     public function showChangePasswordForm(){
-        $cars = CarProduct::all();
-
-        return view('auth.passwords.changepassword') -> with('cars', $cars);
+        if (Auth::check()) {
+        return view('adminpage.settings.changepassword');
+        } else{
+            return redirect('/login');
+        }
     }
 
     public function ChangePassword(Request $request){
-        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
-            // The passwords matches
-            return redirect()->back()->with("error","Your current password does not match with the password you provided. Please try again.");
+
+        if (Auth::check()) {
+            if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+                // The passwords matches
+                return redirect()->back()->with("error","Your current password does not match with the password you provided. Please try again.");
+            }
+            if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
+                //Current password and new password are same
+                return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+            }
+            $validatedData = $request->validate([
+                'current-password' => 'required',
+                'new-password' => 'required|string|min:6|confirmed',
+            ]);
+            //Change Password
+            $user = Auth::user();
+            $user->password = bcrypt($request->get('new-password'));
+            $user->save();
+            return redirect()->back()->with("success","Password changed successfully !");
+        } else{
+            return redirect('/login');
         }
-        if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
-            //Current password and new password are same
-            return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+
+
+    }
+
+    public function FrontPageInfoEditor(){
+        if (Auth::check()) {
+        return view('adminpage.settings.frontpageinfo');
+        } else{
+            return redirect('/login');
         }
-        $validatedData = $request->validate([
-            'current-password' => 'required',
-            'new-password' => 'required|string|min:6|confirmed',
-        ]);
-        //Change Password
-        $user = Auth::user();
-        $user->password = bcrypt($request->get('new-password'));
-        $user->save();
-        return redirect()->back()->with("success","Password changed successfully !");
+    }
+
+    public function FrontPageInfoSubmit(Request $request){
+        if (Auth::check()) {
+            \Config::set('frontpageinfo.name', 'hoi');
+            \Config::set('frontpageinfo.description', $request->input('description'));
+            return redirect('/admin');
+        } else{
+            return redirect('/login');
+        }
     }
 
 }

@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'AdminController@AdminHome');
+Route::get('/', 'ViewerController@FrontPage');
+
+
 Route::get('/home', function(){
     return redirect('/admin');
 });
@@ -31,3 +33,5 @@ Route::get('/admin/cars/edit/{id}', 'AdminController@AdminCarEditor');
 Route::post('/admin/cars/edit/modify/{id}', 'AdminController@AdminCarPublishEdit');
 Route::get('/admin/settings/changepassword','AdminController@showChangePasswordForm');
 Route::post('/admin/settings/changepassword/new','AdminController@ChangePassword');
+Route::get('/admin/settings/frontpageinfo', 'AdminController@FrontPageInfoEditor');
+Route::post('/admin/settings/frontpageinfo/submit', 'AdminController@FrontPageInfoSubmit');

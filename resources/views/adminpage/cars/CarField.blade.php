@@ -37,6 +37,12 @@
             </div>
     </form>
     </div>
+
+    
     <script src="{{ asset('js/app.js')}}"></script>
+
+    <script type="text/javascript">
+        CKEDITOR.replace( 'cardescription' );
+    </script>
 </body>
 @endsection

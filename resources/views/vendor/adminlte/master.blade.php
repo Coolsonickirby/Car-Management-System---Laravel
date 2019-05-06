@@ -42,6 +42,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
 
+    <script type="text/javascript" src="{{asset('ckeditor/ckeditor.js')}}"></script>
+
 </head>
 <body class="hold-transition @yield('body_class')">
 
