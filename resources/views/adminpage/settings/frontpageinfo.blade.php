@@ -3,7 +3,16 @@
 
 @section('content')
 <div class="container">
-    
+    @if (session('error'))
+        <div class="callout callout-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="callout callout-success">
+            {{ session('success') }}
+        </div>
+    @endif
         <form method="post" action="/admin/settings/frontpageinfo/submit" enctype="multipart/form-data">
             <div class="box-body">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">

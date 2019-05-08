@@ -12,11 +12,10 @@
 */
 
 Route::get('/', 'ViewerController@FrontPage');
+Route::get('/products', 'ViewerController@Products');
+Route::get('/products/{id}', 'ViewerController@CarShowcase');
 
 
-Route::get('/home', function(){
-    return redirect('/admin');
-});
 
 Route::get('/randomvin', function () {
     echo file_get_contents("http://randomvin.com/getvin.php?type=real");

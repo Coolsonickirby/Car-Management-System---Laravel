@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-xl-6"><img src="https://privaterubikscubetimer.000webhostapp.com/holdmeback.gif" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;"></div>
                                     
-            <div class="col-xl-6" style="text-align: center;"><h1>Welcome</h1><p>{{Config::get('frontpageinfo.description')}}</p></div>
+            <div class="col-xl-6" style="text-align: center;"><h1>Welcome</h1>{!! $info->description !!}</div>
             </div>
         </div>
     </div>

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Hash;
 use Config;
+use File;
+use Artisan;
+use App\FrontpageInfo;
 
 class AdminController extends Controller
 {
@@ -242,9 +245,18 @@ class AdminController extends Controller
 
     public function FrontPageInfoSubmit(Request $request){
         if (Auth::check()) {
-            \Config::set('frontpageinfo.name', 'hoi');
-            \Config::set('frontpageinfo.description', $request->input('description'));
-            return redirect('/admin');
+
+            if($request->input('name') == null OR $request->input('description') == null){
+                return redirect()->back()->with("error","All fields need to be filled!");
+            } else {
+                $info = FrontPageInfo::find(1);
+
+                $info->name = $request->input('name');
+                $info->description = $request->input('description');
+
+                $info->save();
+                return redirect()->back()->with("success","Aight");
+            }
         } else{
             return redirect('/login');
         }

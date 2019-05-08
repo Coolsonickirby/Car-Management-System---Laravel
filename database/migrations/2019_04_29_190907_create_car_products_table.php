@@ -17,7 +17,7 @@ class CreateCarProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('carname')->nullable();
             $table->string('price')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->text('thumbnail')->nullable();
             $table->text('photos')->nullable();
             $table->string('vin')->nullable();
