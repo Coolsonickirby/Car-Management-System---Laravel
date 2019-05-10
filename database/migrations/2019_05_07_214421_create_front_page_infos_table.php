@@ -16,7 +16,14 @@ class CreateFrontPageInfosTable extends Migration
         Schema::create('front_page_infos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
-            $table->text('description')->nullable();
+            $table->text('frontimages')->nullable();
+            $table->text('frontdescription')->nullable();
+            $table->text('aboutimages')->nullable();
+            $table->text('aboutdescription')->nullable();
+            $table->text('contactemail')->nullable();
+            $table->text('contactphone')->nullable();
+            $table->text('contactaddress')->nullable();
+            $table->text('Main')->nullable();
             $table->timestamps();
         });
     }

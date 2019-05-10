@@ -131,8 +131,8 @@ return [
             'icon'    => 'share',
             'submenu' => [
                 [
-                    'text' => 'Front Page Info',
-                    'url'  => 'admin/settings/frontpageinfo',
+                    'text' => 'Public Info',
+                    'url'  => 'admin/settings/publicinfo',
                 ],
                 [
                     'text' => 'Change Password',

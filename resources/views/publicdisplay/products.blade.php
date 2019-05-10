@@ -36,7 +36,8 @@
 @section('content')
 <div class="container">
     <br>
-    @foreach ($cars as $car)
+    @if(count($cars) > 0)
+        @foreach ($cars as $car)
     <div class="container-fluid"
         style="border: 4px solid green; border-radius: 30px; padding: 10px; background-color: gainsboro; width: 80%;">
         <div class="row">
@@ -109,5 +110,8 @@
     </div>
     <br>
     @endforeach
+    @else
+        <h1>We are sold out.</h1>
+    @endif
 </div>
 @endsection

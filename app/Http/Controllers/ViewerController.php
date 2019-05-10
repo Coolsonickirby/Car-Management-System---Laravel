@@ -23,4 +23,9 @@ class ViewerController extends Controller
         return view('publicdisplay.carshowcase')->with('car', $car);
     }
 
+    public function AboutPage(){
+        $info = FrontPageInfo::find(1);
+        return view('publicdisplay.aboutpage')->with('info', $info);
+    }
+
 }

@@ -4721,7 +4721,7 @@ input[type="button"].btn-block {
     font-size: 1.09375rem;
     line-height: 1;
     background-color: transparent;
-    border: 1px solid transparent;
+    border: 0px solid transparent;
     border-radius: 0
 }
 

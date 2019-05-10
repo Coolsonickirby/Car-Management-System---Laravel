@@ -13,7 +13,7 @@
             {{ session('success') }}
         </div>
     @endif
-        <form method="post" action="/admin/settings/frontpageinfo/submit" enctype="multipart/form-data">
+        <form method="post" action="/admin/settings/publicinfo/submit" enctype="multipart/form-data">
             <div class="box-body">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -23,12 +23,43 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="description">Front Page Description</label>
-                    <textarea name="description" id="textarea" class="form-control" placeholder=""></textarea>
+                    <label for="frontimages">Front Page Images</label>
+                    <input name="frontimages[]" type="file" class="form-control" placeholder="" style="height: 100%;" multiple>
+                </div>
+
+                <div class="form-group">
+                    <label for="frontdescription">Front Page Description</label>
+                    <textarea name="frontdescription" id="textarea1" class="form-control" placeholder=""></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="aboutimages">About Page Images</label>
+                    <input name="aboutimages[]" type="file" class="form-control" placeholder="" style="height: 100%;" multiple>
+                </div>
+
+                <div class="form-group">
+                    <label for="aboutdescription">About Page Description</label>
+                    <textarea name="aboutdescription" id="textarea2" class="form-control" placeholder=""></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactemail">Busniess E-Mail</label>
+                    <input name="contactemail" type="text" class="form-control" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <label for="contacteaddress">Busniess Address</label>
+                    <input name="contactaddress" type="text" class="form-control" placeholder="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactphone">Busniess Phone Number</label>
+                    <input name="contactphone" type="text" class="form-control" placeholder="">
                 </div>
 
                 <script type="text/javascript">
-                    CKEDITOR.replace( 'textarea' );
+                    CKEDITOR.replace( 'textarea1' );
+                    CKEDITOR.replace( 'textarea2' );
                 </script>
 
                 <div class="form-group">

@@ -14,6 +14,8 @@
 Route::get('/', 'ViewerController@FrontPage');
 Route::get('/products', 'ViewerController@Products');
 Route::get('/products/{id}', 'ViewerController@CarShowcase');
+Route::get('/about', 'ViewerController@AboutPage');
+
 
 
 
@@ -29,8 +31,8 @@ Route::get('/admin/cars/add', 'AdminController@AdminCarAdder');
 Route::post('/admin/cars/add/new', 'AdminController@AdminNewCar');
 Route::get('/admin/cars/remove/{id}', 'AdminController@AdminCarRemover');
 Route::get('/admin/cars/edit/{id}', 'AdminController@AdminCarEditor');
-Route::post('/admin/cars/edit/modify/{id}', 'AdminController@AdminCarPublishEdit');
+Route::put('/admin/cars/edit/modify/{id}', 'AdminController@AdminCarPublishEdit');
 Route::get('/admin/settings/changepassword','AdminController@showChangePasswordForm');
 Route::post('/admin/settings/changepassword/new','AdminController@ChangePassword');
-Route::get('/admin/settings/frontpageinfo', 'AdminController@FrontPageInfoEditor');
-Route::post('/admin/settings/frontpageinfo/submit', 'AdminController@FrontPageInfoSubmit');
+Route::get('/admin/settings/publicinfo', 'AdminController@FrontPageInfoEditor');
+Route::post('/admin/settings/publicinfo/submit', 'AdminController@FrontPageInfoSubmit');
