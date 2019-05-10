@@ -5,6 +5,12 @@
 
 @section('css')
 <style>
+    
+    @media(max-width: 760px ){
+        .hide-in-mobile{
+            display: none;
+        }
+    }
     p {
         font: normal 15px Arial;
         text-align: left;
@@ -41,6 +47,7 @@
                 <h4 style="text-decoration: underline; letter-spacing: normal; text-transform: none;">{{$car->carname}}</h4>
                 <div class="row">
                     <div class="col-xl-8">
+                        <div class="hide-in-mobile">
                         <div class="row">
                                 <div class="col-xl-4">
                                         <div class="row">
@@ -87,6 +94,7 @@
                                         </div>
                                     </div>
                         </div>
+                    </div>
                     </div>
                     <div class="col-xl-4">
                         <div style="border: 2px solid gray;border-radius: 20px;background: gray;color: black;">{{$car->price}}</div>
