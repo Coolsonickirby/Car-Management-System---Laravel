@@ -26,11 +26,11 @@
                                         @foreach (unserialize($info->frontimages) as $image)
                                             @if ($loop->first)
                                                 <div class="carousel-item active">
-                                                <img class="d-block w-100" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;">
+                                                <img class="d-block w-100" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;max-width: 500px;max-height:500px;">
                                                 </div>
                                             @else
                                                 <div class="carousel-item">
-                                                    <img class="d-block w-100" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;">
+                                                    <img class="d-block w-100" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;max-width: 500px;max-height:500px;">
                                                 </div>
                                             @endif
                                         @endforeach
