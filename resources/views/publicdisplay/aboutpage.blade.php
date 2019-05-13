@@ -13,9 +13,10 @@
     <div class="container-fluid" style="border: 4px solid green; border-radius: 30px; padding: 10px;">
         <div class="row">
             <div class="col-xl-6">
+                @if (count((array)unserialize($info->aboutimages)) > 1)
                 <div id="slideshowabout" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        @if(substr($info->aboutimages, 0, 2) === "a:")
+                        
                             @foreach (unserialize($info->aboutimages) as $image)
                                 @if ($loop->first)
                                     <div class="carousel-item active">
@@ -35,16 +36,22 @@
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
-                        @else
-                            <img src="{{asset($info->aboutimages)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;">
-                        @endif
                     </div>
                     
                 </div>
+                @else
+                    @foreach (unserialize($info->aboutimages) as $image)
+                    @if ($loop->first)
+                        <img class="d-block w-100" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;max-width: 500px;max-height:500px;">
+                    @endif
+                    @endforeach
+                @endif
             </div>
             <div class="col-xl-6" style="text-align: center;">
                 <h1>{{$info->name}}</h1>
-                {!! $info->aboutdescription !!}
+                <div style="word-break: break-all;">
+                    {!! $info->aboutdescription !!}
+                </div>
             </div>
         </div>
     </div>

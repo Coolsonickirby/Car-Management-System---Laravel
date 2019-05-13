@@ -248,7 +248,6 @@ class AdminController extends Controller
                     $info->name = $request->input('name');
 
                     if($request->file('frontimages') != null){
-                        if (count($request->file('frontimages')) > 1) {
 
                             $frontimagesnames = [];
     
@@ -258,21 +257,13 @@ class AdminController extends Controller
                                 array_push($frontimagesnames, $fronturl);
                             }
     
-                            $info->frontimages = serialize($frontimagesnames);
-                        } elseif (count($request->file('frontimages')) == 1) {
-                            $frontimage = $request->file('frontimages');
-
-                            $frontimage->store('public');
-                            $fronturl = Storage::url($image->hashName());
-                            $info->frontimages = $fronturl;
-                        }    
+                            $info->frontimages = serialize($frontimagesnames);   
                     }
 
                     
                     $info->frontdescription = $request->input('frontdescription');
 
                     if($request->file('aboutimages') != null){
-                        if (count($request->file('aboutimages')) > 1) {
 
                             $aboutimagesnames = [];
     
@@ -283,13 +274,6 @@ class AdminController extends Controller
                             }
     
                             $info->aboutimages = serialize($aboutimagesnames);
-                        } elseif (count($request->file('aboutimages')) == 1) {
-                            $aboutimage = $request->file('aboutimages');
-                        
-                            $aboutimage->store('public');
-                            $abouturl = Storage::url($image->hashName());
-                            $info->aboutimages = $abouturl;
-                        }
                     }
                     
 
@@ -311,8 +295,6 @@ class AdminController extends Controller
                     $info->name = $request->input('name');
 
                     if($request->file('frontimages') != null){
-                        if (count($request->file('frontimages')) > 1) {
-
                             $frontimagesnames = [];
 
                             foreach ($request->file('frontimages') as $image) {
@@ -322,21 +304,11 @@ class AdminController extends Controller
                             }
 
                             $info->frontimages = serialize($frontimagesnames);
-                        } elseif (count($request->file('frontimages')) == 1) {
-                            $frontimage = $request->file('frontimages');
-
-                            $frontimage->store('public');
-                            $fronturl = Storage::url($image->hashName());
-                            $info->frontimages = $fronturl;
-                        }
                     }
 
                     $info->frontdescription = $request->input('frontdescription');
 
                     if($request->file('aboutimages') != null){
-
-                    
-                        if (count($request->file('aboutimages')) > 1) {
 
                             $aboutimagesnames = [];
 
@@ -347,13 +319,7 @@ class AdminController extends Controller
                             }
 
                             $info->aboutimages = serialize($aboutimagesnames);
-                        } elseif (count($request->file('aboutimages')) == 1) {
-                            $aboutimage = $request->file('aboutimages');
-                            
-                            $aboutimage->store('public');
-                            $abouturl = Storage::url($image->hashName());
-                            $info->aboutimages = $abouturl;
-                        }
+                        
                     }
                     $info->aboutdescription = $request->input('aboutdescription');
 

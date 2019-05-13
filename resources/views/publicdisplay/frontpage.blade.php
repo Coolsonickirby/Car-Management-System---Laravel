@@ -10,6 +10,7 @@
             font: normal 15px Arial;
             text-align: left;
         }
+        
 
     </style>
 @endsection
@@ -20,9 +21,9 @@
         <div class="container-fluid" style="border: 4px solid green; border-radius: 30px; padding: 10px;">
             <div class="row">
                     <div class="col-xl-6">
-                            <div id="slideshowabout" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
-                                    @if(substr($info->frontimages, 0, 2) === "a:")
+                            @if (count((array)unserialize($info->frontimages)) > 1)
+                                <div id="slideshowabout" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
                                         @foreach (unserialize($info->frontimages) as $image)
                                             @if ($loop->first)
                                                 <div class="carousel-item active">
@@ -38,18 +39,19 @@
                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                 <span class="sr-only">Previous</span>
                                             </a>
-                                            <a class="carousel-control-next" href="#slideshowabout" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                    @else
-                                        <img src="{{asset($info->frontimages)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;">
-                                    @endif
+                                        <a class="carousel-control-next" href="#slideshowabout" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
                                 </div>
-                                
                             </div>
+                            @else
+                                @foreach (unserialize($info->frontimages) as $image)
+                                    <img class="" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;max-width: 500px;max-height:500px;">
+                                @endforeach
+                            @endif
                         </div>                   
-            <div class="col-xl-6" style="text-align: center;"><h1>Welcome</h1>{!! $info->frontdescription !!}</div>
+            <div class="col-xl-6" style="text-align: center;"><h1>Welcome</h1><div style="word-break: break-all;">{!! $info->frontdescription !!}</div></div>
             </div>
         </div>
     </div>
