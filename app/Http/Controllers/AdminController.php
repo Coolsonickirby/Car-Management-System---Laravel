@@ -125,7 +125,7 @@ class AdminController extends Controller
 
         if (Auth::check()) {
 
-            $car = CarProduct::where('id', $id);
+            $car = CarProduct::where('id', $id)->first();
 
             return view('adminpage.cars.CarEditorField')->with('car', $car);
         } else {
@@ -137,7 +137,7 @@ class AdminController extends Controller
     {
         if (Auth::check()) {
 
-            $car = CarProduct::where('id', $id)->first();
+            $car = CarProduct::where('id', $id);
 
             $car->carname = $oldcar->input('carname');
             $car->price = $oldcar->input('price');
