@@ -137,7 +137,7 @@ class AdminController extends Controller
     {
         if (Auth::check()) {
 
-            $car = CarProduct::where('id', $id);
+            $car = CarProduct::where('id', $id)->first();
 
             $car->carname = $oldcar->input('carname');
             $car->price = $oldcar->input('price');
@@ -292,6 +292,22 @@ class AdminController extends Controller
                 } else {
                     $info = FrontPageInfo::where('Main', 'yes')->first();
 
+                    if ($info->frontimages != null) {
+                        foreach (unserialize($info->frontimages) as $photo) {
+                            $file_to_delete = str_replace("storage", "public", $photo);
+        
+                            Storage::delete($file_to_delete);
+                        }
+                    }
+
+                    if ($info->aboutimages != null) {
+                        foreach (unserialize($info->aboutimages) as $photo) {
+                            $file_to_delete = str_replace("storage", "public", $photo);
+        
+                            Storage::delete($file_to_delete);
+                        }
+                    }
+
                     $info->name = $request->input('name');
 
                     if($request->file('frontimages') != null){
@@ -335,5 +351,11 @@ class AdminController extends Controller
         } else {
             return redirect('/login');
         }
+    }
+
+    public function SellCar($id){
+        $car = CarProduct::where('id', $id)->first();
+
+        return view('adminpage.cars.sellcar')->with('car', $car);
     }
 }

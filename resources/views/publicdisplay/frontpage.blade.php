@@ -47,7 +47,7 @@
                             </div>
                             @else
                                 @foreach (unserialize($info->frontimages) as $image)
-                                    <img class="" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;height: 100%;max-width: 500px;max-height:500px;">
+                                    <img class="" src="{{asset($image)}}" alt="hoi" style="border-radius: 50px;width: 100%;max-width: 500px;max-height:500px;">
                                 @endforeach
                             @endif
                         </div>                   

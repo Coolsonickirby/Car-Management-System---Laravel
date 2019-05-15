@@ -57,6 +57,7 @@
                     <th>Vin #</th>
                     <th>Year</th>
                     <th>Model</th>
+                    <th>Sell</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -69,6 +70,7 @@
                         <td>{{$car->vin}}</td>
                         <td>{{$car->year}}</td>
                         <td>{{$car->model}}</td>
+                        <td><a href="/admin/cars/sell/{{$car->id}}" class="btn btn-success">Sell Car</a></td>
                         <td><a href="/admin/cars/edit/{{$car->id}}" class="btn btn-warning">Edit Car</a></td>
                         <td><a href="/admin/cars/remove/{{$car->id}}" class="btn btn-danger">Delete Car</a></td>
                     </tr>
