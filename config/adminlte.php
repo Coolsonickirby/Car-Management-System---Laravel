@@ -135,9 +135,23 @@ return [
                     'url'  => 'admin/settings/publicinfo',
                 ],
                 [
-                    'text' => 'Change Password',
-                    'url'  => '/admin/settings/changepassword',
+                    'text' => 'Manage Users',
+                    'submenu' => [
+                        [
+                            'text' => 'View Users',
+                            'url'  => '/admin/settings/viewusers',
+                        ],
+                        [
+                            'text' => 'Create User',
+                            'url'  => '/admin/settings/createuser',
+                        ],
+                        [
+                            'text' => 'Change Password',
+                            'url'  => '/admin/settings/changepassword',
+                        ],
+                    ]
                 ],
+                
             ]
         ],
         /*

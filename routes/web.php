@@ -51,3 +51,7 @@ Route::get('/admin/settings/changepassword','AdminController@showChangePasswordF
 Route::post('/admin/settings/changepassword/new','AdminController@ChangePassword');
 Route::get('/admin/settings/publicinfo', 'AdminController@FrontPageInfoEditor');
 Route::post('/admin/settings/publicinfo/submit', 'AdminController@FrontPageInfoSubmit');
+Route::get( '/admin/settings/createuser', 'AdminController@CreateUser');
+Route::post('/admin/settings/createuser/new', 'AdminController@CreateUserNew');
+Route::get('/admin/settings/viewusers', 'AdminController@ViewUsers');
+Route::get('/admin/settings/removeuser/{id}', 'AdminController@RemoveUser');

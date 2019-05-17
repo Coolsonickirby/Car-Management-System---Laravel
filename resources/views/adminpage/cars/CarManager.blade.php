@@ -50,9 +50,10 @@
 @endsection
 
 @section('content')
+
+@include('inc.status')
 <a href="/admin/cars/add" class="btn btn-default">Add A Car</a>
     @if(count($cars) > 0)
-    <br>
     <br>
 
     <table id="" class="table table-hover" style="border: 2px solid black;border-radius: 20px;background: lightskyblue;border-collapse: separate;">

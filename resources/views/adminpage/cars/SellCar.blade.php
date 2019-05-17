@@ -156,7 +156,7 @@
                                 <input name="salesrep" type="text" class="form-control" id="salesrep" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="adminpassword">Admin Password</label>
+                                <label for="adminpassword">Admin/Manager Password</label>
                                 <input name="adminpassword" type="password" class="form-control" id="adminpassword" placeholder="">
                             </div>
                     </div>
@@ -167,6 +167,7 @@
 </form>
 @endsection
 @section('js')
+<script src="{{asset('js/app.js')}}"></script>
     <script>
 
         function showWarning(){
@@ -191,6 +192,15 @@
                 "show" : true // ensure the modal is shown immediately
             });
         };
+
+        $(document).ready(function() {
+        $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+        }
+        });
+        });
         
         var app = new Vue({
             el: "#app1",

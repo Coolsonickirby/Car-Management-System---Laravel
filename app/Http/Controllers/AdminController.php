@@ -55,10 +55,14 @@ class AdminController extends Controller
 
     public function AdminCarAdder()
     {
-        $cars = CarProduct::all();
-
         if (Auth::check()) {
-            return view('adminpage.cars.CarField')->with('cars', $cars);
+            $user = User::find(Auth::id());
+
+            if ($user->role == 'Admin' or $user->role == 'Manager') {
+                return view('adminpage.cars.CarField');
+            } else {
+                return redirect()->back()->with("error", "Only the admin(s) or manager(s) can add cars.");
+            }
         } else {
             return redirect('login');
         }
@@ -126,9 +130,15 @@ class AdminController extends Controller
 
         if (Auth::check()) {
 
-            $car = CarProduct::where('id', $id)->first();
+            $user = User::find(Auth::id());
 
-            return view('adminpage.cars.CarEditorField')->with('car', $car);
+            if ($user->role == 'Admin' or $user->role == 'Manager') {
+                $car = CarProduct::where('id', $id)->first();
+
+                return view('adminpage.cars.CarEditorField')->with('car', $car);
+            } else {
+                return redirect()->back()->with("error", "Only the admin(s) or manager(s) can edit cars.");
+            }
         } else {
             return redirect('login');
         }
@@ -171,27 +181,30 @@ class AdminController extends Controller
     {
         if (Auth::check()) {
 
-            $car = CarProduct::where('id', $id)->first();
+            $user = User::find(Auth::id());
+
+            if ($user->role == 'Admin' or $user->role == 'Manager') {
+                $car = CarProduct::where('id', $id)->first();
 
 
-            if ($car->photos != null) {
-                foreach (unserialize($car->photos) as $photo) {
-                    $file_to_delete = str_replace("storage", "public", $photo);
+                if ($car->photos != null) {
+                    foreach (unserialize($car->photos) as $photo) {
+                        $file_to_delete = str_replace("storage", "public", $photo);
 
-                    Storage::delete($file_to_delete);
+                        Storage::delete($file_to_delete);
+                    }
                 }
+
+                if ($car->thumbnail != null) {
+                    $thumbnail = str_replace("storage", "public", $car->thumbnail);
+
+                    Storage::delete($thumbnail);
+                }
+
+                $car->delete();
+            } else {
+                return redirect()->back()->with("error", "Only the admin(s) or manager(s) can delete cars.");
             }
-
-            if ($car->thumbnail != null) {
-                $thumbnail = str_replace("storage", "public", $car->thumbnail);
-
-                Storage::delete($thumbnail);
-            }
-
-            $car->delete();
-
-
-            return redirect('/admin/cars');
         } else {
             return redirect('login');
         }
@@ -235,7 +248,13 @@ class AdminController extends Controller
     public function FrontPageInfoEditor()
     {
         if (Auth::check()) {
-            return view('adminpage.settings.frontpageinfo');
+            $user = User::find(Auth::id());
+
+            if ($user->role == 'Admin' or $user->role == 'Manager') {
+                return view('adminpage.settings.frontpageinfo');
+            } else {
+                return redirect()->back()->with("error", "Only the admin(s) or manager(s) can edit the public info.");
+            }
         } else {
             return redirect('/login');
         }
@@ -244,133 +263,200 @@ class AdminController extends Controller
     public function FrontPageInfoSubmit(Request $request)
     {
         if (Auth::check()) {
-                if (count(FrontPageInfo::all()) == 0) {
-                    $info = new FrontPageInfo;
-                    $info->name = $request->input('name');
+            if (count(FrontPageInfo::all()) == 0) {
+                $info = new FrontPageInfo;
+                $info->name = $request->input('name');
 
-                    if($request->file('frontimages') != null){
+                if ($request->file('frontimages') != null) {
 
-                            $frontimagesnames = [];
-    
-                            foreach ($request->file('frontimages') as $image) {
-                                $image->store('public');
-                                $fronturl = Storage::url($image->hashName());
-                                array_push($frontimagesnames, $fronturl);
-                            }
-    
-                            $info->frontimages = serialize($frontimagesnames);   
+                    $frontimagesnames = [];
+
+                    foreach ($request->file('frontimages') as $image) {
+                        $image->store('public');
+                        $fronturl = Storage::url($image->hashName());
+                        array_push($frontimagesnames, $fronturl);
                     }
 
-                    
-                    $info->frontdescription = $request->input('frontdescription');
-
-                    if($request->file('aboutimages') != null){
-
-                            $aboutimagesnames = [];
-    
-                            foreach ($request->file('aboutimages') as $aboutimage) {
-                                $aboutimage->store('public');
-                                $abouturl = Storage::url($aboutimage->hashName());
-                                array_push($aboutimagesnames, $abouturl);
-                            }
-    
-                            $info->aboutimages = serialize($aboutimagesnames);
-                    }
-                    
-
-                    $info->aboutdescription = $request->input('aboutdescription');
-
-                    $info->contactemail = $request->input('contactemail');
-                    $info->contactphone = $request->input('contactphone');
-                    $info->contactaddress = $request->input('contactaddress');
-
-                    $info->Main = 'yes';
-
-
-                    $info->save();
-                    return redirect()->back()->with("success", "Aight");
-
-                } else {
-                    $info = FrontPageInfo::where('Main', 'yes')->first();
-
-                    if ($info->frontimages != null) {
-                        foreach (unserialize($info->frontimages) as $photo) {
-                            $file_to_delete = str_replace("storage", "public", $photo);
-        
-                            Storage::delete($file_to_delete);
-                        }
-                    }
-
-                    if ($info->aboutimages != null) {
-                        foreach (unserialize($info->aboutimages) as $photo) {
-                            $file_to_delete = str_replace("storage", "public", $photo);
-        
-                            Storage::delete($file_to_delete);
-                        }
-                    }
-
-                    $info->name = $request->input('name');
-
-                    if($request->file('frontimages') != null){
-                            $frontimagesnames = [];
-
-                            foreach ($request->file('frontimages') as $image) {
-                                $image->store('public');
-                                $fronturl = Storage::url($image->hashName());
-                                array_push($frontimagesnames, $fronturl);
-                            }
-
-                            $info->frontimages = serialize($frontimagesnames);
-                    }
-
-                    $info->frontdescription = $request->input('frontdescription');
-
-                    if($request->file('aboutimages') != null){
-
-                            $aboutimagesnames = [];
-
-                            foreach ($request->file('aboutimages') as $aboutimage) {
-                                $aboutimage->store('public');
-                                $abouturl = Storage::url($aboutimage->hashName());
-                                array_push($aboutimagesnames, $abouturl);
-                            }
-
-                            $info->aboutimages = serialize($aboutimagesnames);
-                        
-                    }
-                    $info->aboutdescription = $request->input('aboutdescription');
-
-                    $info->contactemail = $request->input('contactemail');
-                    $info->contactphone = $request->input('contactphone');
-                    $info->contactaddress = $request->input('contactaddress');
-
-                    $info->save();
-                    return redirect()->back()->with("success", "Aight");
-
+                    $info->frontimages = serialize($frontimagesnames);
                 }
-            
+
+
+                $info->frontdescription = $request->input('frontdescription');
+
+                if ($request->file('aboutimages') != null) {
+
+                    $aboutimagesnames = [];
+
+                    foreach ($request->file('aboutimages') as $aboutimage) {
+                        $aboutimage->store('public');
+                        $abouturl = Storage::url($aboutimage->hashName());
+                        array_push($aboutimagesnames, $abouturl);
+                    }
+
+                    $info->aboutimages = serialize($aboutimagesnames);
+                }
+
+
+                $info->aboutdescription = $request->input('aboutdescription');
+
+                $info->contactemail = $request->input('contactemail');
+                $info->contactphone = $request->input('contactphone');
+                $info->contactaddress = $request->input('contactaddress');
+
+                $info->Main = 'yes';
+
+
+                $info->save();
+                return redirect()->back()->with("success", "Aight");
+            } else {
+                $info = FrontPageInfo::where('Main', 'yes')->first();
+
+                if ($info->frontimages != null) {
+                    foreach (unserialize($info->frontimages) as $photo) {
+                        $file_to_delete = str_replace("storage", "public", $photo);
+
+                        Storage::delete($file_to_delete);
+                    }
+                }
+
+                if ($info->aboutimages != null) {
+                    foreach (unserialize($info->aboutimages) as $photo) {
+                        $file_to_delete = str_replace("storage", "public", $photo);
+
+                        Storage::delete($file_to_delete);
+                    }
+                }
+
+                $info->name = $request->input('name');
+
+                if ($request->file('frontimages') != null) {
+                    $frontimagesnames = [];
+
+                    foreach ($request->file('frontimages') as $image) {
+                        $image->store('public');
+                        $fronturl = Storage::url($image->hashName());
+                        array_push($frontimagesnames, $fronturl);
+                    }
+
+                    $info->frontimages = serialize($frontimagesnames);
+                }
+
+                $info->frontdescription = $request->input('frontdescription');
+
+                if ($request->file('aboutimages') != null) {
+
+                    $aboutimagesnames = [];
+
+                    foreach ($request->file('aboutimages') as $aboutimage) {
+                        $aboutimage->store('public');
+                        $abouturl = Storage::url($aboutimage->hashName());
+                        array_push($aboutimagesnames, $abouturl);
+                    }
+
+                    $info->aboutimages = serialize($aboutimagesnames);
+                }
+                $info->aboutdescription = $request->input('aboutdescription');
+
+                $info->contactemail = $request->input('contactemail');
+                $info->contactphone = $request->input('contactphone');
+                $info->contactaddress = $request->input('contactaddress');
+
+                $info->save();
+                return redirect()->back()->with("success", "Aight");
+            }
         } else {
             return redirect('/login');
         }
     }
 
-    public function SellCar($id){
-        if(Auth::check()){
+    public function CreateUser()
+    {
+        if (Auth::check()) {
+            $user = User::find(Auth::id());
+
+            if ($user->role == 'Admin') {
+                return view('adminpage.settings.createuser');
+            } else {
+                return redirect()->back()->with("error", "Only the admin(s) can create users.");
+            }
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public function CreateUserNew(Request $newuser)
+    {
+        if (Auth::check()) {
+            $this->validate($newuser, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'role' => 'required'
+            ]);
+
+            User::create([
+                'name' => $newuser->name,
+                'email' => $newuser->email,
+                'password' => Hash::make($newuser->password),
+                'role' => $newuser->role,
+            ]);
+
+            return redirect()->back()->with("success", "User created successfully!");
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public function ViewUsers()
+    {
+        if (Auth::check()) {
+            $user = User::find(Auth::id());
+
+            if ($user->role == 'Admin' or $user->role == 'Manager') {
+                $users = User::all();
+
+                return view('adminpage.settings.viewusers')->with('users', $users);
+            } else {
+                return redirect()->back()->with("error", "Only the admin(s) or manager(s) can view the users.");
+            }
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public function RemoveUser($id)
+    {
+        if (Auth::check()) {
+            $user = User::find($id);
+            if (Auth::id() == $user->id) {
+                return redirect()->back()->with("error", "Cannot delete yourself!");
+            } else {
+                $user->forceDelete();
+                return redirect()->back()->with("success", "User removed successfully!");
+            }
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public function SellCar($id)
+    {
+        if (Auth::check()) {
             $car = CarProduct::where('id', $id)->first();
 
             return view('adminpage.cars.sellcar')->with('car', $car);
-        } else{
+        } else {
             return redirect('/login');
         }
-        
     }
 
     public function SellCarPDF(Request $car)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
 
-            $user = User::find(1);
-            if (Hash::check($car->adminpassword, $user->password)) {
+            $userAdmin = User::where('role', 'Admin');
+            $userManager = User::where('role', 'Manager');
+            if (Hash::check($car->adminpassword, $userAdmin->password)) {
                 /*return [
                     $car->carid,
                     $car->firstname,
@@ -395,11 +481,39 @@ class AdminController extends Controller
                     $car->salesrep,
                 ];*/
 
-                $info = FrontPageInfo::find(1);
+                $info = FrontPageInfo::where('Main', 'yes');
                 $pdf = PDF::loadView('adminpage.cars.invoice', compact('info', 'car'))->setOption('disable-smart-shrinking', true)->setOption('viewport-size', '999');
                 //return view( 'adminpage.cars.invoice');
 
-                
+
+
+                $caritem = CarProduct::where('id', $car->carid)->first();
+
+
+                if ($caritem->photos != null) {
+                    foreach (unserialize($caritem->photos) as $photo) {
+                        $file_to_delete = str_replace("storage", "public", $photo);
+
+                        Storage::delete($file_to_delete);
+                    }
+                }
+
+                if ($caritem->thumbnail != null) {
+                    $thumbnail = str_replace("storage", "public", $caritem->thumbnail);
+
+                    Storage::delete($thumbnail);
+                }
+
+                $caritem->delete();
+
+                return $pdf->stream();
+            }else if( Hash::check($car->adminpassword, $userManager->password)){
+
+                $info = FrontPageInfo::where('Main', 'yes');
+                $pdf = PDF::loadView('adminpage.cars.invoice', compact('info', 'car'))->setOption('disable-smart-shrinking', true)->setOption('viewport-size', '999');
+                //return view( 'adminpage.cars.invoice');
+
+
 
                 $caritem = CarProduct::where('id', $car->carid)->first();
 
@@ -422,11 +536,11 @@ class AdminController extends Controller
 
                 return $pdf->stream();
 
-
-            } else{
+            } 
+            else {
                 return redirect()->back()->with("error", "Admin password entered incorrectly!");
             }
-        } else{
+        } else {
             return redirect('/login');
         }
     }

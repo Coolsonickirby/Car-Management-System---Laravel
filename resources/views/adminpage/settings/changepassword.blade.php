@@ -5,16 +5,7 @@
 
 @section('content')
 <div class="container">
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    @include('inc.status')
 <form class="form-horizontal" method="POST" action="/admin/settings/changepassword/new">
         {{ csrf_field() }}
 
