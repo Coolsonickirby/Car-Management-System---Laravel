@@ -57,11 +57,6 @@
                     <input name="contactphone" type="text" class="form-control" placeholder="">
                 </div>
 
-                <script type="text/javascript">
-                    CKEDITOR.replace( 'textarea1' );
-                    CKEDITOR.replace( 'textarea2' );
-                </script>
-
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -70,4 +65,12 @@
         </form>
 </div>
 
+@endsection
+
+@section('js')
+<script type="text/javascript" src="{{asset('ckeditor/ckeditor.js')}}"></script>
+<script type="text/javascript">
+    CKEDITOR.replace( 'textarea1' );
+    CKEDITOR.replace( 'textarea2' );
+</script>
 @endsection

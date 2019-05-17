@@ -39,6 +39,12 @@ Route::get('/admin/cars/remove/{id}', 'AdminController@AdminCarRemover');
 Route::get('/admin/cars/edit/{id}', 'AdminController@AdminCarEditor');
 Route::post('/admin/cars/edit/modify/{id}', 'AdminController@AdminCarPublishEdit');
 Route::get('/admin/cars/sell/{id}', 'AdminController@SellCar');
+Route::post('/admin/cars/sell/invoice/{id}', 'AdminController@SellCarPDF');
+
+Route::get('/admin/pdf', 'AdminController@pdf');
+Route::get('/admin/pdf1', 'AdminController@pdf1');
+
+
 
 //Admin Settings
 Route::get('/admin/settings/changepassword','AdminController@showChangePasswordForm');

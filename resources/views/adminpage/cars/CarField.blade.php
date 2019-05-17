@@ -28,7 +28,7 @@
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="tab_3">
-                            <h1><_< owo</h1>
+                            <h1>sds</h1>
                         </div>
                         <!-- /.tab-pane -->
                     </div>
@@ -37,12 +37,13 @@
             </div>
     </form>
     </div>
+    <script type="text/javascript" src="{{ asset('js/app.js')}}"></script>
+</body>
+@endsection
 
-    
-    <script src="{{ asset('js/app.js')}}"></script>
-
+@section('js')
+    <script type="text/javascript" src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script type="text/javascript">
         CKEDITOR.replace( 'cardescription' );
     </script>
-</body>
 @endsection

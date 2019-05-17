@@ -2,6 +2,12 @@
 @section('title', 'Cars')
 @section('css')
 <style>
+    @media(max-width:949px){
+        .table{
+            overflow-x: auto;
+            display: block;
+        }
+    }
     .table-hover tbody tr:hover td {
         background: lightgreen;
     }

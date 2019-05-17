@@ -7,10 +7,11 @@ use App\CarProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Hash;
-use Config;
-use File;
-use Artisan;
 use App\FrontpageInfo;
+use App;
+use PDF;
+use App\User;
+
 
 class AdminController extends Controller
 {
@@ -354,8 +355,79 @@ class AdminController extends Controller
     }
 
     public function SellCar($id){
-        $car = CarProduct::where('id', $id)->first();
+        if(Auth::check()){
+            $car = CarProduct::where('id', $id)->first();
 
-        return view('adminpage.cars.sellcar')->with('car', $car);
+            return view('adminpage.cars.sellcar')->with('car', $car);
+        } else{
+            return redirect('/login');
+        }
+        
+    }
+
+    public function SellCarPDF(Request $car)
+    {
+        if(Auth::check()){
+
+            $user = User::find(1);
+            if (Hash::check($car->adminpassword, $user->password)) {
+                /*return [
+                    $car->carid,
+                    $car->firstname,
+                    $car->middlename,
+                    $car->lastname,
+                    $car->street,
+                    $car->zipcode,
+                    $car->city,
+                    $car->state,
+                    $car->phone,
+                    $car->email,
+                    $car->dateofsale,
+                    $car->timeofsale,
+                    $car->carname,
+                    $car->vin,
+                    $car->carprice,
+                    $car->govfees,
+                    $car->dealerservice,
+                    $car->servicecontract,
+                    $car->salestax,
+                    $car->totalprice,
+                    $car->salesrep,
+                ];*/
+
+                $info = FrontPageInfo::find(1);
+                $pdf = PDF::loadView('adminpage.cars.invoice', compact('info', 'car'))->setOption('disable-smart-shrinking', true)->setOption('viewport-size', '999');
+                //return view( 'adminpage.cars.invoice');
+
+                
+
+                $caritem = CarProduct::where('id', $car->carid)->first();
+
+
+                if ($caritem->photos != null) {
+                    foreach (unserialize($caritem->photos) as $photo) {
+                        $file_to_delete = str_replace("storage", "public", $photo);
+
+                        Storage::delete($file_to_delete);
+                    }
+                }
+
+                if ($caritem->thumbnail != null) {
+                    $thumbnail = str_replace("storage", "public", $caritem->thumbnail);
+
+                    Storage::delete($thumbnail);
+                }
+
+                $caritem->delete();
+
+                return $pdf->stream();
+
+
+            } else{
+                return redirect()->back()->with("error", "Admin password entered incorrectly!");
+            }
+        } else{
+            return redirect('/login');
+        }
     }
 }

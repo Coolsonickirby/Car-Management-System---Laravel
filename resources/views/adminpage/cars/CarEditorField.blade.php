@@ -66,10 +66,6 @@
                                                 placeholder="">{{$car->description}}</textarea>
                                 </div>
 
-                                <script type="text/javascript">
-                                        CKEDITOR.replace( 'cardescription' );
-                                </script>
-
                                 <div class="form-group">
                                         <label for="make">Make</label>
                                         <input name="make" type="text" class="form-control" id="make" placeholder=""
@@ -137,4 +133,11 @@
                 </div>
         </div>
 </form>
+@endsection
+
+@section('js')
+    <script type="text/javascript" src="{{asset('ckeditor/ckeditor.js')}}"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace( 'cardescription' );
+        </script>
 @endsection
