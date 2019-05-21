@@ -10,6 +10,7 @@ class ViewerController extends Controller
 {
     public function FrontPage(){
         $info = FrontPageInfo::find(1);
+
         return view('publicdisplay.frontpage')->with('info', $info);
     }
 

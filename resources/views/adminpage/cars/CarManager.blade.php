@@ -50,10 +50,9 @@
 @endsection
 
 @section('content')
-
-@include('inc.status')
 <a href="/admin/cars/add" class="btn btn-default">Add A Car</a>
     @if(count($cars) > 0)
+    <br>
     <br>
 
     <table id="" class="table table-hover" style="border: 2px solid black;border-radius: 20px;background: lightskyblue;border-collapse: separate;">
@@ -77,9 +76,9 @@
                         <td>{{$car->vin}}</td>
                         <td>{{$car->year}}</td>
                         <td>{{$car->model}}</td>
-                        <td><a href="/admin/cars/sell/{{$car->id}}" class="btn btn-success">Sell Car</a></td>
+                        <td><a onclick="return confirm('Are you sure?')" href="/admin/cars/sell/{{$car->id}}" class="btn btn-success">Sell Car</a></td>
                         <td><a href="/admin/cars/edit/{{$car->id}}" class="btn btn-warning">Edit Car</a></td>
-                        <td><a href="/admin/cars/remove/{{$car->id}}" class="btn btn-danger">Delete Car</a></td>
+                        <td><a onclick="return confirm('Are you sure?')" href="/admin/cars/remove/{{$car->id}}" class="btn btn-danger">Delete Car</a></td>
                     </tr>
         @endforeach
     </tbody>

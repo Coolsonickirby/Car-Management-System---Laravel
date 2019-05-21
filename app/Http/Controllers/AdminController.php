@@ -11,6 +11,7 @@ use App\FrontpageInfo;
 use App;
 use PDF;
 use App\User;
+use App\Invoices;
 
 
 class AdminController extends Controller
@@ -453,10 +454,7 @@ class AdminController extends Controller
     public function SellCarPDF(Request $car)
     {
         if (Auth::check()) {
-
-            $userAdmin = User::where('role', 'Admin');
-            $userManager = User::where('role', 'Manager');
-            if (Hash::check($car->adminpassword, $userAdmin->password)) {
+            if (Hash::check($car->adminpassword, User::find(Auth::id())->password)) {
                 /*return [
                     $car->carid,
                     $car->firstname,
@@ -479,16 +477,11 @@ class AdminController extends Controller
                     $car->salestax,
                     $car->totalprice,
                     $car->salesrep,
-                ];*/
-
-                $info = FrontPageInfo::where('Main', 'yes');
+                    ];*/
+                $info = FrontPageInfo::where('Main', 'yes')->first();
+                $caritem = CarProduct::where('id', $car->carid)->first();
                 $pdf = PDF::loadView('adminpage.cars.invoice', compact('info', 'car'))->setOption('disable-smart-shrinking', true)->setOption('viewport-size', '999');
                 //return view( 'adminpage.cars.invoice');
-
-
-
-                $caritem = CarProduct::where('id', $car->carid)->first();
-
 
                 if ($caritem->photos != null) {
                     foreach (unserialize($caritem->photos) as $photo) {
@@ -506,42 +499,72 @@ class AdminController extends Controller
 
                 $caritem->delete();
 
-                return $pdf->stream();
-            }else if( Hash::check($car->adminpassword, $userManager->password)){
+                $invoice = new Invoices;
 
-                $info = FrontPageInfo::where('Main', 'yes');
-                $pdf = PDF::loadView('adminpage.cars.invoice', compact('info', 'car'))->setOption('disable-smart-shrinking', true)->setOption('viewport-size', '999');
-                //return view( 'adminpage.cars.invoice');
+                $invoice->sellername = $car->salesrep . " " . User::find(Auth::id())->email;
 
+                $invoice->buyername = $car->firstname . " " . $car->middlename . " " . $car->lastname;
 
+                $invoice->carname = $car->carname;
 
-                $caritem = CarProduct::where('id', $car->carid)->first();
+                $invoice->vin = $car->vin;
 
+                $invoice->price = $car->totalprice;
 
-                if ($caritem->photos != null) {
-                    foreach (unserialize($caritem->photos) as $photo) {
-                        $file_to_delete = str_replace("storage", "public", $photo);
+                $invoice->carid = $car->carid;
 
-                        Storage::delete($file_to_delete);
-                    }
-                }
+                date_default_timezone_set("America/New_York");
 
-                if ($caritem->thumbnail != null) {
-                    $thumbnail = str_replace("storage", "public", $caritem->thumbnail);
+                $pdfname = date("m.d.y H.i.s") . $car->firstname . $car->middlename . $car->lastname . $car->salesrep . $car->carname . $car->vin . str_random(3) . '.pdf';
 
-                    Storage::delete($thumbnail);
-                }
+                $pdfpath = Storage::url('/invoices/' . date("m.d.y H.i.s") . $car->firstname . $car->middlename . $car->lastname . $car->salesrep . $car->carname . $car->vin . str_random(3) . '.pdf');
 
-                $caritem->delete();
+                $pdf->save(storage_path('/invoices/'.$pdfname));
+
+                $invoice->pdf = $pdfpath;
+
+                $invoice->save();
 
                 return $pdf->stream();
-
-            } 
-            else {
-                return redirect()->back()->with("error", "Admin password entered incorrectly!");
+            } else {
+                return redirect()->back()->with("error", "Password entered incorrectly!");
             }
         } else {
             return redirect('/login');
         }
+    }
+
+    public function RandomCars()
+    {
+        $i = 0;
+
+        while ($i < 30) {
+            $car = new CarProduct;
+
+            $car->carname = Str::random(5);
+            $car->price = '$'.rand(1000, 500000);
+            $car->vin = Str::random(17);
+            $car->description = Str::random(5);
+            $car->model = Str::random(5);
+            $car->make = Str::random(5);
+            $car->year = rand(1000, 9999);
+            $car->manufacturer = Str::random(5);
+            $car->type = Str::random(5);
+            $car->engine = Str::random(5);
+            $car->transmission = Str::random(5);
+            $car->body = Str::random(5);
+            $car->miles = Str::random(5);
+            $car->fueltype = Str::random(5);
+            $car->interiorcolor = Str::random(5);
+            $car->exteriorcolor = Str::random(5);
+            $car->drivetrain = Str::random(5);
+            $car->steeringlocation = Str::random(5);
+
+            $car->save();
+
+            $i++;
+        }
+
+        return count(CarProduct::all());
     }
 }
