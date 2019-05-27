@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Hash;
 use App\FrontpageInfo;
-use App;
+use Str;
 use PDF;
 use App\User;
 use App\Invoices;
@@ -30,33 +30,20 @@ class AdminController extends Controller
 
     public function AdminHome()
     {
-
-        if (Auth::check()) {
             $cars = CarProduct::all();
 
             return view('adminpage.admin')->with('cars', $cars);
-        } else {
-            return redirect('login');
-        }
     }
 
     public function AdminCars()
     {
-
-        if (Auth::check()) {
-
-            $cars = CarProduct::all();
+            $cars = CarProduct::paginate(20);
 
             return view('adminpage.cars.CarManager')->with('cars', $cars);
-        } else {
-
-            return redirect('login');
-        }
     }
 
     public function AdminCarAdder()
     {
-        if (Auth::check()) {
             $user = User::find(Auth::id());
 
             if ($user->role == 'Admin' or $user->role == 'Manager') {
@@ -64,15 +51,11 @@ class AdminController extends Controller
             } else {
                 return redirect()->back()->with("error", "Only the admin(s) or manager(s) can add cars.");
             }
-        } else {
-            return redirect('login');
-        }
     }
 
     public function AdminNewCar(Request $newcar)
     {
 
-        if (Auth::check()) {
             $this->validate($newcar, [
                 'carname' => 'required',
                 'price' => 'required'
@@ -120,16 +103,12 @@ class AdminController extends Controller
             $carnew->steeringlocation = $newcar->input('steeringlocation');
             $carnew->save();
 
-            return redirect('/admin/cars');
-        } else {
-            return redirect('login');
-        }
+            return redirect('/admin/cars')->with('success', 'Car created successfully!');
     }
 
     public function AdminCarEditor($id)
     {
 
-        if (Auth::check()) {
 
             $user = User::find(Auth::id());
 
@@ -140,14 +119,10 @@ class AdminController extends Controller
             } else {
                 return redirect()->back()->with("error", "Only the admin(s) or manager(s) can edit cars.");
             }
-        } else {
-            return redirect('login');
-        }
     }
 
     public function AdminCarPublishEdit($id, Request $oldcar)
     {
-        if (Auth::check()) {
 
             $car = CarProduct::where('id', $id)->first();
 
@@ -172,15 +147,11 @@ class AdminController extends Controller
 
             $car->save();
 
-            return redirect('/admin/cars');
-        } else {
-            return redirect('login');
-        }
+            return redirect('/admin/cars')->with('success', 'Car successfully edited!');
     }
 
     public function AdminCarRemover($id)
     {
-        if (Auth::check()) {
 
             $user = User::find(Auth::id());
 
@@ -203,27 +174,23 @@ class AdminController extends Controller
                 }
 
                 $car->delete();
+
+                return redirect()->back()->with("success", "Car sucessfully deleted!");
             } else {
                 return redirect()->back()->with("error", "Only the admin(s) or manager(s) can delete cars.");
             }
-        } else {
-            return redirect('login');
-        }
+        
     }
 
     public function showChangePasswordForm()
     {
-        if (Auth::check()) {
             return view('adminpage.settings.changepassword');
-        } else {
-            return redirect('/login');
-        }
+        
     }
 
     public function ChangePassword(Request $request)
     {
 
-        if (Auth::check()) {
             if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
                 // The passwords matches
                 return redirect()->back()->with("error", "Your current password does not match with the password you provided. Please try again.");
@@ -241,14 +208,10 @@ class AdminController extends Controller
             $user->password = bcrypt($request->get('new-password'));
             $user->save();
             return redirect()->back()->with("success", "Password changed successfully !");
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function FrontPageInfoEditor()
     {
-        if (Auth::check()) {
             $user = User::find(Auth::id());
 
             if ($user->role == 'Admin' or $user->role == 'Manager') {
@@ -256,14 +219,10 @@ class AdminController extends Controller
             } else {
                 return redirect()->back()->with("error", "Only the admin(s) or manager(s) can edit the public info.");
             }
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function FrontPageInfoSubmit(Request $request)
     {
-        if (Auth::check()) {
             if (count(FrontPageInfo::all()) == 0) {
                 $info = new FrontPageInfo;
                 $info->name = $request->input('name');
@@ -363,16 +322,12 @@ class AdminController extends Controller
                 $info->contactaddress = $request->input('contactaddress');
 
                 $info->save();
-                return redirect()->back()->with("success", "Aight");
+                return redirect()->back()->with("success", "Public Info sucessfully updated!");
             }
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function CreateUser()
     {
-        if (Auth::check()) {
             $user = User::find(Auth::id());
 
             if ($user->role == 'Admin') {
@@ -380,14 +335,10 @@ class AdminController extends Controller
             } else {
                 return redirect()->back()->with("error", "Only the admin(s) can create users.");
             }
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function CreateUserNew(Request $newuser)
     {
-        if (Auth::check()) {
             $this->validate($newuser, [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -403,31 +354,23 @@ class AdminController extends Controller
             ]);
 
             return redirect()->back()->with("success", "User created successfully!");
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function ViewUsers()
     {
-        if (Auth::check()) {
             $user = User::find(Auth::id());
 
             if ($user->role == 'Admin' or $user->role == 'Manager') {
-                $users = User::all();
+                $users = User::paginate(20);
 
                 return view('adminpage.settings.viewusers')->with('users', $users);
             } else {
                 return redirect()->back()->with("error", "Only the admin(s) or manager(s) can view the users.");
             }
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function RemoveUser($id)
     {
-        if (Auth::check()) {
             $user = User::find($id);
             if (Auth::id() == $user->id) {
                 return redirect()->back()->with("error", "Cannot delete yourself!");
@@ -435,25 +378,17 @@ class AdminController extends Controller
                 $user->forceDelete();
                 return redirect()->back()->with("success", "User removed successfully!");
             }
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function SellCar($id)
     {
-        if (Auth::check()) {
             $car = CarProduct::where('id', $id)->first();
 
             return view('adminpage.cars.sellcar')->with('car', $car);
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function SellCarPDF(Request $car)
     {
-        if (Auth::check()) {
             if (Hash::check($car->adminpassword, User::find(Auth::id())->password)) {
                 /*return [
                     $car->carid,
@@ -501,9 +436,13 @@ class AdminController extends Controller
 
                 $invoice = new Invoices;
 
-                $invoice->sellername = $car->salesrep . " " . User::find(Auth::id())->email;
+                $invoice->sellername = $car->salesrep;
+
+                $invoice->selleremail = User::find(Auth::id())->email;
 
                 $invoice->buyername = $car->firstname . " " . $car->middlename . " " . $car->lastname;
+
+                $invoice->buyeremail = $car->email;
 
                 $invoice->carname = $car->carname;
 
@@ -515,11 +454,17 @@ class AdminController extends Controller
 
                 date_default_timezone_set("America/New_York");
 
-                $pdfname = date("m.d.y H.i.s") . $car->firstname . $car->middlename . $car->lastname . $car->salesrep . $car->carname . $car->vin . str_random(3) . '.pdf';
+                $randint = rand(1, 10);
 
-                $pdfpath = Storage::url('/invoices/' . date("m.d.y H.i.s") . $car->firstname . $car->middlename . $car->lastname . $car->salesrep . $car->carname . $car->vin . str_random(3) . '.pdf');
+                $pdfname = date("m.d.y.H.i.s") . $car->firstname . $car->middlename . $car->lastname . $car->salesrep . $car->carname . $car->vin . $randint . '.pdf';
 
-                $pdf->save(storage_path('/invoices/'.$pdfname));
+                $pdfname = preg_replace('/\s+/', '', $pdfname);
+
+                $pdfpath = Storage::url('app\invoices/' . date("m.d.y.H.i.s") . $car->firstname . $car->middlename . $car->lastname . $car->salesrep . $car->carname . $car->vin . $randint . '.pdf');
+
+                $pdfpath = preg_replace('/\s+/', '', $pdfpath);
+
+                $pdf->save(storage_path('app\invoices/'.$pdfname));
 
                 $invoice->pdf = $pdfpath;
 
@@ -529,9 +474,6 @@ class AdminController extends Controller
             } else {
                 return redirect()->back()->with("error", "Password entered incorrectly!");
             }
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function RandomCars()
@@ -565,6 +507,22 @@ class AdminController extends Controller
             $i++;
         }
 
-        return count(CarProduct::all());
+        return redirect()->back()->with("success", "Cars everywhere.");
+    }
+
+    public function InvoicesList(){
+        $invoices = Invoices::paginate(20);
+
+        return view('adminpage.settings.invoices')->with('invoices', $invoices);
+    }
+
+    public function InvoiceView($id){
+
+        $invoice = Invoices::where('id', $id)->first();
+        
+        return response()->download(base_path($invoice->pdf), null, [], null);
+
+        //return response()->download( 'C:\laragon\www\CarProject\storage\app\invoices\05.22.19.14.39.22AliNasrHussainAdminRyhEcmFqlWRZDsaKMPYetk3.pdf', null, [], null);
+
     }
 }

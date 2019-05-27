@@ -15,7 +15,7 @@ class ViewerController extends Controller
     }
 
     public function Products(){
-        $cars = CarProduct::all();
+        $cars = CarProduct:: paginate(10);
         return view('publicdisplay.products')->with('cars', $cars);
     }
 

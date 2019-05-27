@@ -118,9 +118,14 @@
                 </div>
                         
                 <div id="pictures" class="tabcontent">
-                    @foreach (unserialize($car->photos) as $image)
+                    @if ($car->photos != null)
+                        @foreach (unserialize($car->photos) as $image)
                         <img src="{{asset($image)}}" class="images-custom">
-                    @endforeach
+                        @endforeach
+                    @else
+                        <h3>owo wure am i</h3>
+                    @endif
+                    
                 </div>
 
                 <div id="info" class="tabcontent">

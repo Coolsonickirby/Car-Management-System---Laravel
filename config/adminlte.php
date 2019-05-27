@@ -131,6 +131,10 @@ return [
             'icon'    => 'share',
             'submenu' => [
                 [
+                    'text' => 'Invoices',
+                    'url'  => 'admin/settings/invoices',
+                ],
+                [
                     'text' => 'Public Info',
                     'url'  => 'admin/settings/publicinfo',
                 ],

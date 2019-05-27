@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'View Users')
+@section('title', 'Create User')
 
 @section('css')
 <style>
@@ -11,7 +11,7 @@
     }
 
     .table-hover tbody tr:hover td {
-        background: skyblue;
+        background: #FF75B5;
     }
 
     .table-hover tbody tr td {
@@ -55,79 +55,85 @@
     }
 
     .pagination {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        padding-left: 0;
-        list-style: none;
-        border-radius: 0;
-        -webkit-box-pack: center !important;
-        -ms-flex-pack: center !important;
-        justify-content: center !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0;
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
     }
-
+    
     .pagination>.active>a,
     .pagination>.active>a:focus,
     .pagination>.active>a:hover,
     .pagination>.active>span,
     .pagination>.active>span:focus,
     .pagination>.active>span:hover {
-
-        z-index: 3;
-        color: #fff;
-        cursor: default;
-        background-color: mediumseagreen;
-        border-color: #222d32;
-
+    
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: mediumseagreen;
+    border-color: #222d32;
+    
     }
-
+    
     .pagination>li>a,
     .pagination>li>span {
-        border: 1px solid #222d32;
+    border: 1px solid #222d32;
     }
-
-    .pagination>li>a:focus,
-    .pagination>li>a:hover,
-    .pagination>li>span:focus,
-    .pagination>li>span:hover {
-        color: purple;
-        background-color: lightgray;
-        border-color: #222d32;
+    
+    .pagination > li > a:focus,
+    .pagination > li > a:hover,
+    .pagination > li > span:focus,
+    .pagination > li > span:hover
+    {
+    color: purple;
+    background-color: lightgray;
+    border-color: #222d32;
     }
 </style>
 @endsection
 
 @section('content')
+@section('content')
 
 @include('inc.status')
-
-@if (count($users) > 0)
+@if (count($invoices) > 0)
 <br>
 <table id="" class="table table-hover"
-    style="border: 2px solid black;border-radius: 20px;background: lightgreen;border-collapse: separate;">
+    style="border: 2px solid black;border-radius: 20px;background: antiquewhite;border-collapse: separate;">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>E-Mail</th>
-            <th>Role</th>
-            <th>Delete</th>
+            <th>Car ID</th>
+            <th>Seller Name</th>
+            <th>Seller E-Mail</th>
+            <th>Buyer Name</th>
+            <th>Buyer E-Mail</th>
+            <th>View Invoice</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($users as $user)
+        @foreach($invoices as $invoice)
         <tr>
-            <td>{{$user->name}}</td>
-            <td>{{$user->email}}</td>
-            <td>{{$user->role}}</td>
-            <td><a href="/admin/settings/removeuser/{{$user->id}}" class="btn btn-danger">Delete User</a></td>
+            <td>{{$invoice->carid}}</td>
+            <td>{{$invoice->sellername}}</td>
+            <td>{{$invoice->selleremail}}</td>
+            <td>{{$invoice->buyername}}</td>
+            <td>{{$invoice->buyeremail}}</td>
+            <td><a href="/admin/settings/invoices/view/{{$invoice->id}}" class="btn btn-success">View Invoice</a></td>
         </tr>
         @endforeach
     </tbody>
 </table>
 <div>
-    {{$users->links()}}
+    {{ $invoices->links() }}
 </div>
 @else
 <h1>If the system is glitched, then call <strong>313-918-6791</strong></h1>
 @endif
 @endsection
+@stop

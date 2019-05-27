@@ -42,10 +42,9 @@ Route::get('/admin/cars/sell/{id}', 'AdminController@SellCar');
 Route::post('/admin/cars/sell/invoice/{id}', 'AdminController@SellCarPDF');
 Route::get('/admin/cars/random', 'AdminController@RandomCars');
 
-
+//PDF
 Route::get('/admin/pdf', 'AdminController@pdf');
 Route::get('/admin/pdf1', 'AdminController@pdf1');
-
 
 
 //Admin Settings
@@ -57,3 +56,5 @@ Route::get( '/admin/settings/createuser', 'AdminController@CreateUser');
 Route::post('/admin/settings/createuser/new', 'AdminController@CreateUserNew');
 Route::get('/admin/settings/viewusers', 'AdminController@ViewUsers');
 Route::get('/admin/settings/removeuser/{id}', 'AdminController@RemoveUser');
+Route::get('/admin/settings/invoices', 'AdminController@InvoicesList');
+Route::get('/admin/settings/invoices/view/{id}', 'AdminController@InvoiceView');

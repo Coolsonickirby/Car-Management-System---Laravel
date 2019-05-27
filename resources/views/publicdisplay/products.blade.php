@@ -30,6 +30,18 @@
         background: lightgreen;
         color: black;
     }
+
+    .pagination{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 0;
+        -webkit-box-pack: center !important;
+        -ms-flex-pack: center !important;
+        justify-content: center !important;
+    }
 </style>
 @endsection
 
@@ -111,7 +123,9 @@
     <br>
     @endforeach
     @else
-        <h1>We are sold out.</h1>
     @endif
+    <div>
+    {{ $cars->links() }}
+    </div>
 </div>
 @endsection
